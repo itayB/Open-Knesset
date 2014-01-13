@@ -1,0 +1,10 @@
+# This includes parts which requires compiling or scraping related, etc
+-r requirements.txt
+
+--find-links http://download.savannah.gnu.org/releases/mimms/
+
+mimms>=3.2
+
+# Temporary, until pyth release a new pypi with pull #16
+# Using OriHoch's fork with a fix to ignore bad unicode characters in rtf reader
+-e git://github.com/OriHoch/pyth.git#egg=pyth

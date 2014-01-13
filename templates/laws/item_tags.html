@@ -1,0 +1,7 @@
+{% load i18n %}
+<span class="item-tags">
+    {% trans "Tags" %}:
+    {% for tag in tags %}
+        <a class="badge" href="{% url 'tag-detail' slug=tag %}">{{ tag.name }}</a>
+    {% endfor %}
+</span>

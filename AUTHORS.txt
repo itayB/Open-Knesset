@@ -1,6 +1,10 @@
 Adam Kariv
 Alon Levy
+Amir More
 Amir Yalon
+Amit Zur
+Ana Trachtman
+Ayal Gelles
 Benny Daon
 Boris Dinkevich
 David Shimon
@@ -8,7 +12,9 @@ Ethan Shalev
 Imri Goldberg
 Jonathan Livni
 Jonathan Rouach
+Meir Kriheli 
 Michael Shynar 
+Mushon Zer-Aviv
 Near Privman
 Ofri Raviv
 Omer Gertel
@@ -16,3 +22,4 @@ Ori Band
 Shahar Tal
 Yo'av Moshe
 Yoni Levy
+Yoval Porat

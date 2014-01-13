@@ -1,0 +1,127 @@
+{% extends "site_base.html" %}
+{% load i18n i18ninclude tagging_tags bills_tags links_tags mks_tags agendas_tags %}
+{% load static from staticfiles %}
+{% block help-section %}{% endblock %}
+{% block extratitle %}{{ vote.title }}{% endblock %}
+{% block keywords %}{{ vote.name }}{% endblock %}
+{% block description %}{{ vote.title }} - {% trans 'Open Knesset - Opening the Knesset to the public' %}{% endblock %}
+{% block nav-votes %}class="active"{% endblock %}
+{% block extrajs %}
+    {% include "auxiliary/tags_object_edit_extrajs.html" with app_label="laws" object_type="vote" object_id=vote.id %}
+{% endblock %}
+
+{% block breadcrumbs %}
+        <li><a href="{% url 'vote-list' %}">{% trans "Votes" %}</a> <span class="divider">/</span></li>
+        <li class="active">{{title}}</a>
+{% endblock %}
+
+{% block divcontent %}
+    <section class="card card-main">
+        <div class="row">
+            <div class="span12">
+                <div class="spacer">
+                    <h1>{{ vote.title }}</h1>
+                    <p>{{ vote.time_string }}</p>
+                    <div class="alert alert-info">
+                        {% i18ninclude "laws/vote_detail_help.html" LANGUAGE_CODE %}
+                    </div>
+                </div>
+            </div>
+        </div>
+      <a href="#" class="btn btn-mini btn-expand" data-target="#vote-extra"
+          data-toggle="oktoggle" data-text="{% trans "More" %} +|{% trans "Collapse" %} -">{% trans "More" %} +</a>
+    </section>
+
+    <section class="card card-main">
+        <div class="row">
+            <div class="span6">
+                <div class="spacer">
+                    <h2>{% trans "For" %} <span class="badge badge-success">{{vote.for_votes_count}}</span></h2>
+                    {% include "laws/vote_member_photos.html" with votes=for_votes%}
+                </div>
+            </div>
+            <div class="span6">
+                <div class="spacer">
+                    <h2>{% trans "Against" %} <span class="badge badge-important">{{vote.against_votes_count}}</span></h2>
+                    {% include "laws/vote_member_photos.html" with votes=against_votes %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="row">
+        <div class="span8 cards">
+            <div class="card card-list">
+                <header><h2><i class="fa fa-link"></i>{% trans "Links" %}</h2></header>
+                <ul>
+                {% object_links vote %}
+                </ul>
+            </div>
+            <div class="card card-list">
+                <header><h2><i class="fa fa-gavel"></i>{% trans 'Bill' %}</h2></header>
+                <ul class="items">
+                {% for bill in bills %}
+                    <li>
+                        <p class="item-title"><a href={% url 'bill-detail' bill.id %}>{% bill_full_name bill %}</a></p>
+                    </li>
+                {% empty %}
+                    <li>{% trans 'No bill is associated with this vote' %}</li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% if vote.committee_meetings.count %}
+            <div class="card card-list">
+                <header><h2><i class="fa fa-users"></i>{% trans 'This vote is mentioned in the following committe meetings' %}</h2></header>
+                <ul>
+                {% for cm in vote.committee_meetings.all %}
+                    <li>
+                        <p class="item-title"><a href="{{ cm.get_absolute_url }}">{{ cm }}</a></p>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% if vote.summary %}
+            <div class="card card-list">
+                <header><h2><i class="fa fa-file"></i>{% trans 'summary' %}</h2></header>
+                <ul>
+                    <li>{{ vote.summary|safe }}</li>
+                </ul>
+            </div>
+        {% endif %}
+
+        {% if vote.full_text %}
+            <div class="card card-list">
+                <header><h2><i class="fa fa-file-text"></i>{% trans 'Bill Text' %}</h2></header>
+                <ul>
+                    <li>{{ vote.full_text|safe }}</li>
+                </ul>
+            </div>
+        {% endif %}
+
+            <div>
+                {% if next_v %}
+                <a class="btn" href="{{ next_v }}">{% trans "Go to next vote by time" %}</a>
+                {% endif %}
+                {% if prev_v %}
+                <a class="btn" href="{{ prev_v }}">{% trans "Go to previous vote by time" %}</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="span4">
+            <aside class="sidebar">
+                {% include "auxiliary/tags_object_edit.html" %}
+            </aside> <!-- tagging -->
+
+            <aside class="sidebar">
+                {% agendas_for user vote 'vote' %}
+            </aside>
+
+            <aside class="sidebar">
+            {% include "comments/object_comment_list.html" with object=vote %}
+            </aside>
+        </div>
+    </div>
+
+{% endblock %}

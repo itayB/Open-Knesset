@@ -1,0 +1,40 @@
+{% extends 'site_base.html' %}
+{% load i18n %}
+{% load search %}
+{% block extratitle %}{% trans 'Search' %}{% endblock %}
+{% block nav-main-page %} class="selected" {% endblock %}
+{% block breadcrumbs %}
+<li class="active">{% trans "Search" %}</li>
+{% endblock %}
+{% block divcontent %}
+<div class="card" id="google-search-outer">
+    <div class="row">
+        <div class="span12">
+            <div class="spacer">
+{% if query %}
+                <h1>{% trans "Search results for" %} &quot;{{query}}&quot;</h1>
+{% else %}
+                <h1>{% trans "Search" %}</h1>
+                <p>{% trans "Please enter a search term in the search field." %}</p>
+{% endif %}
+            </div>
+        </div>
+    </div>
+{% if query %}
+    <script>
+    (function() {
+        var cx = '{{ cx }}';
+        var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = true;
+        gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+            '//www.google.com/cse/cse.js?cx=' + cx;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
+    })();
+    </script>
+    <div class="row">
+        <div id="google-search-results" class="span12">
+            <gcse:search></gcse:search>
+        </div>
+    </div>
+{% endif %}
+</div>
+{% endblock %}
